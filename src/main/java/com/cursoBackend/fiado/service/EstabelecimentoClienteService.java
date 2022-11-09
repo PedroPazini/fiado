@@ -1,5 +1,8 @@
 package com.cursoBackend.fiado.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,18 @@ public class EstabelecimentoClienteService {
 		estabelecimentoCliente.setEstabelecimento(estabelecimento);
 
 		return estabelecimentoClienteRepository.save(estabelecimentoCliente);
+	}
+
+	public List<Cliente> getByEstabelecimento(Estabelecimento estabelecimento) {
+		List<EstabelecimentoCliente> list = estabelecimentoClienteRepository.findByEstabelecimento(estabelecimento);
+
+		ArrayList<Cliente> clientes = new ArrayList<>();
+
+		list.forEach(ec -> {
+			clientes.add(ec.getCliente());
+		});
+
+		return clientes;
 	}
 
 }

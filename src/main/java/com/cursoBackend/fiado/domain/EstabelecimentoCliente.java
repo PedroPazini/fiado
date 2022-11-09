@@ -28,7 +28,7 @@ public class EstabelecimentoCliente implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "estabelecimento_id")
-	private Estabelecimento Estabelecimento;
+	private Estabelecimento estabelecimento;
 
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
@@ -41,16 +41,16 @@ public class EstabelecimentoCliente implements Serializable {
 			Cliente cliente) {
 		super();
 		this.id = id;
-		Estabelecimento = estabelecimento;
+		this.estabelecimento = estabelecimento;
 		this.cliente = cliente;
 	}
 
 	public Estabelecimento getEstabelecimento() {
-		return Estabelecimento;
+		return estabelecimento;
 	}
 
 	public void setEstabelecimento(Estabelecimento estabelecimento) {
-		Estabelecimento = estabelecimento;
+		this.estabelecimento = estabelecimento;
 	}
 
 	public Cliente getCliente() {
