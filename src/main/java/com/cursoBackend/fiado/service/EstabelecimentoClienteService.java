@@ -2,6 +2,7 @@ package com.cursoBackend.fiado.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,15 @@ public class EstabelecimentoClienteService {
 		});
 
 		return clientes;
+	}
+
+	public Optional<EstabelecimentoCliente> findByEstabelecimentoAndCliente(Estabelecimento estabelecimentoId,
+			Cliente clienteId) {
+		return estabelecimentoClienteRepository.findByEstabelecimentoAndCliente(estabelecimentoId, clienteId);
+	}
+
+	public void delete(EstabelecimentoCliente estabelecimentoCliente) {
+		estabelecimentoClienteRepository.delete(estabelecimentoCliente);
 	}
 
 }

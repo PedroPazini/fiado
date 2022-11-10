@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cursoBackend.fiado.domain.Cliente;
 import com.cursoBackend.fiado.domain.Estabelecimento;
+import com.cursoBackend.fiado.domain.EstabelecimentoCliente;
 import com.cursoBackend.fiado.service.ClienteService;
 import com.cursoBackend.fiado.service.EstabelecimentoClienteService;
 import com.cursoBackend.fiado.service.EstabelecimentoService;
@@ -61,6 +62,29 @@ public class EstabelecimentoClienteController {
 		List<Cliente> clientes = estabelecimentoClienteService.getByEstabelecimento(optionalEstabelecimento.get());
 
 		return ResponseEntity.status(HttpStatus.OK).body(clientes);
+	}
+
+	@GetMapping(path = "{estabelecimentoId}/cliente/{clienteId}")
+	public ResponseEntity<Object> deleteCliente(@PathVariable UUID estabelecimentoId, @PathVariable UUID clienteId) {
+		Optional<Cliente> optionalCliente = clienteService.findById(clienteId);
+		Optional<Estabelecimento> optionalEstabelecimento = estabelecimentoService.findById(estabelecimentoId);
+
+		if ((!optionalCliente.isPresent())) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não existe na base de dados");
+		}
+		if ((!optionalEstabelecimento.isPresent())) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Estabelecimento não existe na base de dados");
+		}
+
+		Optional<EstabelecimentoCliente> optionalEC = estabelecimentoClienteService
+				.findByEstabelecimentoAndCliente(optionalEstabelecimento.get(), optionalCliente.get());
+
+		if ((!optionalEC.isPresent())) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("não existe na base de dados");
+		}
+		estabelecimentoClienteService.delete(optionalEC.get());
+
+		return ResponseEntity.status(HttpStatus.OK).body("Deletado com sucesso");
 	}
 
 }
