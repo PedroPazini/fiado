@@ -39,6 +39,11 @@ public class EstabelecimentoClienteService {
 
 		return clientes;
 	}
+	
+	public List<EstabelecimentoCliente> findAll() {
+		return estabelecimentoClienteRepository.findAll();
+	}
+	
 
 	public Optional<EstabelecimentoCliente> findByEstabelecimentoAndCliente(Estabelecimento estabelecimentoId,
 			Cliente clienteId) {

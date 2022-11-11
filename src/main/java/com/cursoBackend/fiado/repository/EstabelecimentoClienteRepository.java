@@ -19,4 +19,6 @@ public interface EstabelecimentoClienteRepository extends JpaRepository<Estabele
 	Optional<EstabelecimentoCliente> findByEstabelecimentoAndCliente(Estabelecimento estabelecimentoId,
 			Cliente clienteId);
 
+	List<Cliente> findClienteByEstabelecimento(Estabelecimento estabelecimento);
+	
 }

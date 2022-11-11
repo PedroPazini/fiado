@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ import com.cursoBackend.fiado.service.EstabelecimentoClienteService;
 import com.cursoBackend.fiado.service.EstabelecimentoService;
 
 @RestController
-@RequestMapping(path = "api/estabelecimentocliente/")
+@RequestMapping(path = "api/estabelecimentocliente")
 public class EstabelecimentoClienteController {
 
 	@Autowired
@@ -34,7 +35,7 @@ public class EstabelecimentoClienteController {
 	@Autowired
 	private ClienteService clienteService;
 
-	@PostMapping(path = "create")
+	@PostMapping(path = "/create")
 	public ResponseEntity<Object> create(@RequestParam UUID estabelecimentoId, @RequestParam UUID clienteId) {
 
 		Optional<Cliente> optionalCliente = clienteService.findById(clienteId);
@@ -51,7 +52,7 @@ public class EstabelecimentoClienteController {
 				.body(estabelecimentoClienteService.save(optionalCliente.get(), optionalEstabelecimento.get()));
 	}
 
-	@GetMapping(path = "{estabelecimentoId}/clientes")
+	@GetMapping(path = "/{estabelecimentoId}/clientes")
 	public ResponseEntity<Object> estabelecimentoPorId(@PathVariable UUID estabelecimentoId) {
 		Optional<Estabelecimento> optionalEstabelecimento = estabelecimentoService.findById(estabelecimentoId);
 
@@ -64,7 +65,7 @@ public class EstabelecimentoClienteController {
 		return ResponseEntity.status(HttpStatus.OK).body(clientes);
 	}
 
-	@GetMapping(path = "{estabelecimentoId}/cliente/{clienteId}")
+	@DeleteMapping(path = "/{estabelecimentoId}/cliente/{clienteId}")
 	public ResponseEntity<Object> deleteCliente(@PathVariable UUID estabelecimentoId, @PathVariable UUID clienteId) {
 		Optional<Cliente> optionalCliente = clienteService.findById(clienteId);
 		Optional<Estabelecimento> optionalEstabelecimento = estabelecimentoService.findById(estabelecimentoId);
@@ -85,6 +86,12 @@ public class EstabelecimentoClienteController {
 		estabelecimentoClienteService.delete(optionalEC.get());
 
 		return ResponseEntity.status(HttpStatus.OK).body("Deletado com sucesso");
+	}
+
+	@GetMapping(path = "/")
+	public ResponseEntity<Object> findAllEstabelecimentos() {
+
+		return ResponseEntity.status(HttpStatus.OK).body(estabelecimentoClienteService.findAll());
 	}
 
 }

@@ -15,6 +15,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.cursoBackend.fiado.dto.CompraFiadaDto;
+
 @Entity
 @Table(name = "compras_fiadas")
 public class CompraFiada implements Serializable {
@@ -24,7 +26,7 @@ public class CompraFiada implements Serializable {
 	@Id
 	@GeneratedValue(generator = "uuid2", strategy = GenerationType.IDENTITY)
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@org.hibernate.annotations.Type(type="uuid-char")
+	@org.hibernate.annotations.Type(type = "uuid-char")
 	private UUID id;
 
 	private String nome;
@@ -32,27 +34,61 @@ public class CompraFiada implements Serializable {
 	private LocalDateTime data;
 	private int valor;
 	
-	
+	private boolean foiPago;
+
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "estabelecimento_id")
 	private Estabelecimento estabelecimento;
 
-	public CompraFiada(UUID id, String nome, String observacao, LocalDateTime data, int valor, Cliente cliente, Estabelecimento estabelecimento) {
+	public CompraFiada(UUID id, String nome, String observacao, int valor, Cliente cliente,
+			Estabelecimento estabelecimento) {
 		super();
-		this.id = id;
 		this.nome = nome;
 		this.observacao = observacao;
-		this.data = data;
+		this.data = LocalDateTime.now();
 		this.valor = valor;
 		this.cliente = cliente;
 		this.estabelecimento = estabelecimento;
 	}
 
 	public CompraFiada() {
+		this.data = LocalDateTime.now();
+	}
+
+	public CompraFiada(CompraFiadaDto compraFiadaDto) {
+		super();
+		this.nome = compraFiadaDto.getNome();
+		this.observacao = compraFiadaDto.getObservacao();
+		this.data = LocalDateTime.now();
+		this.valor = compraFiadaDto.getValor();
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public boolean isFoiPago() {
+		return foiPago;
+	}
+
+	public void setFoiPago(boolean isFoiPago) {
+		this.foiPago = isFoiPago;
+	}
+	
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
 	}
 
 	public UUID getId() {
@@ -111,6 +147,5 @@ public class CompraFiada implements Serializable {
 		CompraFiada other = (CompraFiada) obj;
 		return Objects.equals(id, other.id);
 	}
-	
 
 }
